@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+body{
+  background:#070707;
+  color:white;
+  overflow-x:hidden;
+  overflow-y:auto;
+}
+
+
+/* PAGE */
+.page{
+  position:absolute;
+  inset:0;
+  padding:150px 20px 140px;
+  display:none;
+  overflow-y:auto;
+  opacity:0;
+  transform:translateX(80px) scale(.95);
+  transition:.6s ease;
+}
+.page.active{
+  display:block;
+  opacity:1;
+  transform:translateX(0) scale(1);
+}
+.page.exit{
+  opacity:0;
+  transform:translateX(-80px) scale(.95);
+}
+
+/* TOP */
+.top{
+  position:absolute;
+  top:25px;
+  width:100%;
+  text-align:center;
+}
+.running{
+  font-weight:700;
+  letter-spacing:3px;
+  animation:slide 12s linear infinite;
+}
+@keyframes slide{
+  from{transform:translateX(100%)}
+  to{transform:translateX(-100%)}
+}
+.line{
+  width:60%;
+  height:2px;
+  margin:12px auto 0;
+  background:linear-gradient(90deg,#ff0080,#00ffff,#00ff6a);
+  box-shadow:0 0 14px #00ffff;
+}
+
+/* HOME */
+.home-content{
+  min-height:105vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+/* PROFILE */
+.profile{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin-top:40px;
+}
+
+/* FOTO RGB */
+.photo-wrap{
+  position:relative;
+  width:160px;
+  height:160px;
+  border-radius:50%;
+  padding:5px;
+}
+.photo-wrap::before{
+  content:"";
+  position:absolute;
+  inset:-6px;
+  border-radius:50%;
+  background:conic-gradient(red,orange,yellow,green,cyan,blue,purple,red);
+  filter:blur(14px);
+  opacity:.55;
+  animation:spin 7s linear infinite;
+  z-index:-1;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.profile img{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+/* TEXT */
+.hello{
+  margin-top:16px;
+  font-size:18px;
+  color:#aaa;
+}
+.profile h1{
+  margin-top:6px;
+  font-size:26px;
+}
+
+/* MOTIVASI */
+.motivation-box{
+  margin-top:90px;
+  opacity:0;
+  transform:translateY(30px);
+  transition:1s;
+}
+.motivation-box.show{
+  opacity:1;
+  transform:none;
+}
+.motivation{
+  padding:16px 22px;
+  background:rgba(255,255,255,.07);
+  border-radius:18px;
+  font-size:14px;
+  color:#00ff6a;
+  box-shadow:0 0 18px rgba(0,255,106,.25);
+}
+
+/* SOCIAL */
+.social{
+  position:absolute;
+  top:25px;
+  right:20px;
+  display:flex;
+  gap:18px;
+}
+.social a{
+  color:white;
+  font-size:22px;
+  transition:.3s;
+}
+.social a:hover{
+  transform:scale(1.3);
+  text-shadow:0 0 18px currentColor;
+}
+.social a:nth-child(1):hover{color:#25D366}
+.social a:nth-child(2):hover{color:#ff4dd2}
+
+/* ABOUT */
+.about-box{
+  margin:80px auto;
+  width:95%;
+  max-width:460px;
+  padding:35px;
+  border-radius:30px;
+  background:rgba(255,255,255,.05);
+  box-shadow:0 0 20px cyan,0 0 40px rgba(0,255,255,.4);
+  opacity:0;
+  transform:translateX(80px) scale(.9);
+  transition:1s;
+}
+.about-box.show{opacity:1;transform:none}
+
+/* CARD */
+.card{
+  width:260px;
+  margin:18px auto;
+  padding:22px;
+  border-radius:22px;
+  background:rgba(255,255,255,.07);
+  border-left:5px solid #00ff6a;
+  display:flex;
+  gap:15px;
+  align-items:center;
+  opacity:0;
+  transform:translateY(40px);
+  transition:.4s;
+  color:white;
+  text-decoration:none;
+}
+.card.show{opacity:1;transform:none}
+.card:hover{
+  transform:scale(1.08);
+  box-shadow:0 0 20px #00ff6a;
+}
+.card i{font-size:22px;color:#00ff6a}
+
+/* FORM */
+.form{
+  width:300px;
+  margin:30px auto;
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+.form input,.form textarea{
+  background:rgba(255,255,255,.08);
+  border:none;
+  border-radius:15px;
+  padding:14px;
+  color:white;
+}
+.form textarea{resize:none;height:120px}
+.form button{
+  background:#00ff6a;
+  border:none;
+  padding:14px;
+  border-radius:20px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+}
+.form button:hover{
+  box-shadow:0 0 18px #00ff6a;
+  transform:scale(1.05);
+}
+.thanks{
+  text-align:center;
+  margin-top:20px;
+  color:#00ff6a;
+  display:none;
+}
+
+/* MENU */
+.menu{
+  position:fixed;
+  bottom:15px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#0d0d0d;
+  border-radius:35px;
+  display:flex;
+  gap:30px;
+  padding:16px 34px;
+}
+.menu button{
+  background:none;
+  border:none;
+  color:#00ff6a;
+  font-size:16px;
+  cursor:pointer;
+  transition:.3s;
+}
+.menu button:hover{
+  text-shadow:0 0 15px #00ff6a;
+  transform:scale(1.15);
+}
+.menu button.active{
+  transform:scale(1.2);
+  text-shadow:0 0 18px #00ff6a;
+}
+/* ABOUT EXTRA */
+.about-extra{
+  margin-top:120px; /* bikin harus scroll dulu */
+  display:flex;
+  flex-direction:column;
+  gap:40px;
+}
+
+.about-item{
+  display:flex;
+  align-items:flex-start;
+  gap:18px;
+  opacity:0;
+  transform:translateY(40px);
+  transition:.8s ease;
+}
+
+.about-item.show{
+  opacity:1;
+  transform:none;
+}
+
+.about-icon{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+ 
+.about-icon i{
+  color:white;
+  font-size:18px;
+}
+
+.about-text{
+  background:rgba(255,255,255,.06);
+  padding:16px 18px;
+  border-radius:16px;
+  font-size:14px;
+  line-height:1.6;
+}
+/* ABOUT EXTRA BOX - PERSEGI + LED UNGU */
+.about-text{
+  background:rgba(255,255,255,.06);
+  padding:18px 20px;
+  border-radius:12px; /* lebih PERSEGI */
+  font-size:14px;
+  line-height:1.6;
+
+  /* LED UNGU */
+  box-shadow:
+    0 0 12px rgba(180,0,255,.35),
+    0 0 28px rgba(180,0,255,.25);
+  border:1px solid rgba(180,0,255,.35);
+}
+.about-icon{
+  box-shadow:
+    0 0 10px rgba(180,0,255,.35),
+    0 0 20px rgba(180,0,255,.25);
+  border:1px solid rgba(180,0,255,.4);
+}
+/* CONTAINER ABOUT EXTRA */
+.about-extra{
+  display:flex;
+  align-items:center;          /* logo TENGAH */
+  gap:18px;
+  margin:30px auto;
+  width:95%;
+  max-width:460px;
+
+  opacity:0;
+  transform:translateX(80px) scale(.95);
+  transition:1s ease;
+}
+.about-extra.show{
+  opacity:1;
+  transform:none;
+}
+
+/* ICON ORANG */
+.about-icon{
+  width:48px;
+  height:48px;
+  border-radius:10px;          /* kotak, dikit aja */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-size:22px;
+
+  background:rgba(255,255,255,.05);
+
+  /* LED UNGU */
+  box-shadow:
+    0 0 12px rgba(180,0,255,.45),
+    0 0 26px rgba(180,0,255,.25);
+  border:1px solid rgba(180,0,255,.4);
+}
+
+/* BOX TEKS PERSEGI */
+.about-text{
+  flex:1;
+  padding:18px 20px;
+  font-size:14px;
+  line-height:1.6;
+
+  border-radius:0;             /* 🔥 INI KUNCI: PERSEGI */
+  background:rgba(255,255,255,.06);
+
+  /* LED UNGU */
+  box-shadow:
+    0 0 14px rgba(180,0,255,.35),
+    0 0 30px rgba(180,0,255,.25);
+  border:1px solid rgba(180,0,255,.45);
+}
+/* ABOUT BOX EXTRA (SAMA KAYA ATAS) */
+.about-extra{
+  margin:30px auto;
+  width:95%;
+  max-width:460px;
+  padding:22px;
+
+  display:flex;
+  gap:15px;
+  align-items:flex-start;
+
+  background:rgba(244, 1, 1, 0.05);
+  border-radius:0; /* 🔥 PERSEGI */
+  
+  /* LED UNGU */
+  box-shadow:
+    0 0 20px rgba(180,0,255,.45),
+    0 0 40px rgba(180,0,255,.25);
+
+  border-left:5px solid #b400ff;
+
+  opacity:0;
+  transform:translateX(80px) scale(.9);
+  transition:1s;
+}
+
+.about-extra.show{
+  opacity:1;
+  transform:none;
+}
+
+/* ICON DI DALAM KOTAK */
+.about-extra i{
+  font-size:22px;
+  color:white;
+  margin-top:2px;
+}
+
+/* TEKS */
+.about-extra p{
+  font-size:14px;
+  line-height:1.6;
+}
+.observe{
+  opacity:0;
+  transform:scale(1.2) translateY(80px);
+  filter:blur(12px);
+  transition:1s cubic-bezier(.22,1,.36,1);
+}
+
+.observe.active{
+  opacity:1;
+  transform:scale(1) translateY(0);
+  filter:blur(0);
+}
+
+.observe.out{
+  opacity:0;
+  transform:scale(.6);
+  filter:blur(18px);
+}
+.observe{
+  margin-top:120px;   /* 🔥 jarak antar box */
+}
+.about-title{
+  text-align:center;
+  font-size:28px;
+  font-weight:700;
+  letter-spacing:4px;
+  margin-top:-40px;
+  margin-bottom:60px;
+  color:white;
+  text-shadow:
+    0 0 12px rgba(255, 162, 80, 0.6),
+    0 0 24px rgba(203, 255, 80, 0.4);
+  opacity:0;
+  transform:translateY(-20px);
+  animation:aboutTitleIn .9s ease forwards;
+}
+
+@keyframes aboutTitleIn{
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+/* BOX 4 5 6 — ESTETIK TENANG */
+.box-solid{
+  background:#1c1f2e; /* dark blue-purple elegan */
+  color:#eaeaff;
+
+  border-radius:26px;
+  padding:28px;
+
+  border:1.5px solid rgba(120,130,255,.35);
+
+  box-shadow:
+    0 0 14px rgba(120,130,255,.25),
+    inset 0 0 18px rgba(255,255,255,.03);
+
+  transition:.4s ease;
+}
+
+/* hover halus, ga norak */
+.box-solid:hover{
+  transform:translateY(-4px);
+  box-shadow:
+    0 0 22px rgba(140,150,255,.45),
+    inset 0 0 22px rgba(255,255,255,.05);
+}
+
+/* icon di dalam box */
+.box-solid i{
+  font-size:24px;
+  margin-bottom:10px;
+  display:block;
+  color:#bfc6ff;
+  text-shadow:0 0 8px rgba(160,170,255,.35);
+}
+
+/* RESET JARAK DEFAULT */
+.about-extra{
+  margin: 0 auto;
+}
+
+/* ===============================
+   JARAK KHUSUS PER BOX
+   =============================== */
+
+/* BOX 1 (ungu) → JAUH */
+.about-extra.box-purple{
+  margin-top:120px;
+  margin-bottom:120px;
+}
+
+/* BOX 2 (cyan) → JAUH */
+.about-extra.box-cyan{
+  margin-bottom:120px;
+}
+
+/* BOX 3 (solid pertama) → JAUH */
+.about-extra.box-solid:nth-of-type(3){
+  margin-bottom:120px;
+}
+
+/* BOX 4,5,6 → DEMPET BANGET */
+.about-extra.box-solid:nth-of-type(4),
+.about-extra.box-solid:nth-of-type(5),
+.about-extra.box-solid:nth-of-type(6){
+  margin-top:8px;
+  margin-bottom:8px;
+}
+/* ===============================
+   ABOUT CLOSING TEXT
+   =============================== */
+
+.about-closing{
+  width:90%;
+  max-width:520px;
+  margin:120px auto 80px;
+  padding:28px 26px;
+  text-align:center;
+  border-radius:22px;
+  background:linear-gradient(
+    135deg,
+    rgba(160,90,255,.25),
+    rgba(80,200,255,.25)
+  );
+  box-shadow:
+    0 0 18px rgba(160,90,255,.5),
+    0 0 28px rgba(80,200,255,.35);
+  opacity:0;
+  transform:translateY(60px) scale(.95);
+  transition:1s ease;
+}
+
+.about-closing.show{
+  opacity:1;
+  transform:none;
+}
+
+.about-closing p{
+  font-size:14px;
+  line-height:1.8;
+  color:#f2f2ff;
+}
+
+/* ===============================
+   GALERI DOKUMENTASI
+   =============================== */
+
+.about-gallery{
+  width:95%;
+  max-width:900px;
+  margin:140px auto 80px;
+  opacity:0;
+  transform:translateY(60px);
+  transition:1s ease;
+}
+
+.about-gallery.show{
+  opacity:1;
+  transform:none;
+}
+
+.gallery-title{
+  text-align:center;
+  margin-bottom:40px;
+  font-size:20px;
+  letter-spacing:2px;
+  color:#cfcfff;
+  text-shadow:0 0 12px rgba(180,120,255,.6);
+}
+
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px;
+}
+
+.gallery-item{
+  border-radius:18px;
+  overflow:hidden;
+  background:#111;
+  transform:scale(.9);
+  opacity:0;
+  transition:.8s ease;
+}
+
+.about-gallery.show .gallery-item{
+  transform:scale(1);
+  opacity:1;
+}
+
+.gallery-item img{
+  width:100%;
+  height:160px;
+  object-fit:cover;
+  transition:.5s;
+}
+
+.gallery-item:hover img{
+  transform:scale(1.1);
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .gallery-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+/* FOOTER */
+.footer{
+  width:100%;
+  padding:100px 20px 90px;
+  background:#2b2e44;
+  text-align:center;
+  margin-top:80px;
+}
+
+footer{
+  position:relative;
+  width:100%;
+  padding:40px 20px;
+  background:#0b0b0b;
+  text-align:center;
+}
+
+/* supaya scroll berhenti rapi di footer */
+.page{
+  overscroll-behavior:contain;
+}
+
+
+.footer-text{
+  font-size:18px;
+  margin-bottom:30px;
+  color:#eaeaea;
+}
+
+.footer-social{
+  display:flex;
+  justify-content:center;
+  gap:35px;
+}
+
+.footer-social a{
+  color:white;
+  font-size:26px;
+  transition:.3s;
+}
+
+.footer-social a:hover{
+  transform:scale(1.25);
+  text-shadow:0 0 15px currentColor;
+}
+
+/* warna hover mirip gambar */
+.footer-social a:nth-child(1):hover{color:#ff4dd2} /* IG */
+.footer-social a:nth-child(2):hover{color:#1877f2} /* FB */
+.footer-social a:nth-child(3):hover{color:#ffffff} /* GitHub */
+.footer-social a:nth-child(4):hover{color:#1da1f2} /* Twitter */
+
+
+
+</style>
+</head>
+
+<body>
+<audio id="bgMusic" loop>
+  <source src="nur.mpeg" type="audio/mpeg">
+</audio>
+
+<canvas id="bg"></canvas>
+
+<!-- HOME -->
+<div class="page active" id="home">
+  <div class="top">
+    <div class="running">THIS IS MY PORTFOLIO</div>
+    <div class="line"></div>
+  </div>
+
+  <div class="home-content">
+    <div class="profile">
+      <div class="photo-wrap">
+        <img src="FAIZ.jpg.jpeg">
+      </div>
+      <div class="hello">Halo, nama ku</div>
+      <h1>M. FAIZ SYAMNUR RAMADHAN</h1>
+    </div>
+
+    <div class="motivation-box" id="motivation">
+      <div class="motivation">
+        “Jangan tunggu sempurna untuk memulai, mulai lah untuk menjadi sempurna.”
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="about">
+  <div class="about-title">
+  ABOUT ME
+</div>
+
+  <div class="social">
+    <a href="https://wa.me/628579806858"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://instagram.com/zeflow_w"><i class="fab fa-instagram"></i></a>
+  </div>
+  <div class="about-box">
+    Saya adalah siswa SMK Pertiwi Kuningan yang aktif di jurusan
+Rekayasa Perangkat Lunak. Saat ini saya sedang berproses
+untuk menjadi seorang pengusaha hebat, berawal dari
+pengalaman-pengalaman berharga yang saya jalani
+selama menempuh pendidikan di bangku SMK.
+  </div>
+  
+
+  <div class="about-extra observe box-purple">
+  <i class="fa-solid fa-user"></i>
+  <p>
+    Saya terus mengembangkan kemampuan dan mental bertumbuh<br>
+    melalui setiap proses yang saya jalani.
+    adapun kemampuan/ skil yang saya miliki:<br><br>
+    1.TEAMWORK & COLLABORATION<br>
+    2.COMMUNICATION & SOSIAL<br>
+    3.LEADERSHIP<br>
+    4.PROBLEM SOLVING & CRITIKAL THINKKING<br>
+    5.DIGITAL DASAR & BAHASA PEMROGRAMAN(microsoft office,html,java,css,php,database )<br>
+    6.TEMEN CURHAT BOLEH JAPRI <br>
+    7.SPORT & MARTIAL ARTS (boxing,silat)
+  </p>
+</div>
+
+
+<div class="about-extra observe box-cyan">
+  <i class="fa-solid fa-user"></i>
+  <p>
+    selama 18thun ini banyak hal yang sudah saya alami <br>
+    termasuk pengalaman pengalaman yang menururut saya berharga <br>
+    dan terus membuat saya berkembang dianataranya:
+  </p>
+</div>
+<div class="about-extra observe box-solid">
+  <i class="fa-solid fa-user"></i>
+  <p>Pernah aktif dalam Organisasi Siswa Intra Sekolah (OSIS) Divisi 1 selama satu periode. Melalui pengalaman tersebut, saya belajar tentang tanggung jawab, kepemimpinan, kerja sama tim, serta manajemen kegiatan.<br>
+     Berbagai tantangan yang dihadapi menjadi proses pembelajaran yang membentuk pola pikir saya untuk terus berkembang, beradaptasi, dan meningkatkan kemampuan diri.
+Kesan dan pengalaman berharga selama di OSIS membuat saya memahami pentingnya komunikasi yang baik, pengambilan keputusan, serta komitmen dalam menjalankan amanah. Pengalaman ini menjadi fondasi bagi saya untuk terus bertumbuh menjadi pribadi yang lebih matang, disiplin, dan siap menghadapi tantangan di masa depan.</p>
+</div>
+
+<div class="about-extra observe box-solid">
+  <i class="fa-solid fa-user"></i>
+  <p>Alumni SMPIQu Al-Bahjah Cirebon.
+Sekolah ini menjadi salah satu fondasi penting dalam membentuk nilai keagamaan, akidah, serta karakter hidup saya. Selama menempuh pendidikan di sana, saya memperoleh banyak pelajaran dan pengalaman berharga, mulai dari belajar hidup mandiri, membiasakan diri untuk menelaah sesuatu secara lebih dalam, 
+menjunjung tinggi kejujuran, hingga memperkuat kedekatan diri kepada Tuhan. Pengalaman tersebut menjadi bekal utama dalam membangun prinsip hidup, kedisiplinan, serta arah perkembangan diri saya hingga saat ini.</p>
+</div>
+
+<div class="about-extra observe box-solid">
+  <i class="fa-solid fa-user"></i>
+  <p>Saya pernah menjalani berbagai pekerjaan dan usaha kecil sebagai bentuk pembelajaran sekaligus untuk menambah uang saku selama bersekolah. Pengalaman tersebut meliputi peran sebagai waiter, barista, dan kasir di warmindo maupun kafe.
+Melalui pengalaman kerja sambil sekolah, saya belajar menerapkan manajemen waktu dengan baik, memahami tanggung jawab dalam dunia kerja, serta merasakan langsung proses jatuh bangun dalam berusaha. Selain itu, saya juga mendapatkan wawasan mengenai strategi lokasi, pelayanan pelanggan, serta dasar-dasar marketing yang dibutuhkan dalam menjalankan usaha.
+Pengalaman ini juga membantu saya memperluas networking dan membangun relasi dengan berbagai kalangan, mulai dari pelanggan, rekan kerja, hingga pelaku usaha, yang semakin mengasah kemampuan komunikasi dan adaptasi saya di lingkungan profesional.</p>
+</div>
+<div class="about-extra observe box-solid">
+  <i class="fa-solid fa-user"></i>
+  <p>Saat ini saya masih duduk di kelas XI dan sedang menjalani proses Praktik Kerja Lapangan (PKL) di Jakarta Selatan, tepatnya di perusahaan multinasional PT Danone, pada bagian administrasi AQUA. Kesempatan untuk merantau dari Jawa Barat ke Jakarta menjadi pengalaman yang sangat berharga bagi saya, karena menuntut saya untuk benar-benar mandiri dan bertanggung jawab terhadap diri sendiri.
+Melalui proses PKL ini, saya belajar banyak hal, mulai dari kedisiplinan kerja, manajemen waktu, komunikasi profesional, hingga memahami sistem kerja di lingkungan perusahaan multinasional. Pengalaman ini menjadi langkah awal bagi saya untuk terus berkembang, memperluas wawasan, serta mempersiapkan diri menghadapi dunia kerja yang sesungguhnya.</p>
+</div>
+<div class="about-extra observe box-solid">
+  <i class="fa-solid fa-user"></i>
+  <p>Setelah menyelesaikan PKL di Jakarta, saya berencana melanjutkan magang di BCA. Saat ini saya masih dalam proses mengikuti dan mengerjakan tahapan seleksi. Ke depannya, setelah lulus sekolah dan menyelesaikan program magang, saya memiliki rencana untuk melanjutkan studi ke Jerman melalui program Ausbildung. Mohon doa dan dukungan dari teman-teman agar setiap rencana yang saya jalani dapat berjalan lancar dan mencapai hasil terbaik..</p>
+</div>
+<!-- ABOUT CLOSING TEXT -->
+<div class="about-closing observe">
+  <p>
+    Menjadi diri sendiri adalah pilihan terbaik.<br>
+    Bereksperesilah dari apa yang kamu lihat dan rasakan hari ini.<br><br>
+
+    Cintai hobimu—selama itu membuatmu lebih hidup dan bersemangat.<br>
+    Karena dari hobi kecil, seperti motoran sore hari,<br>
+    kita bisa tetap bahagia, membangun cerita,<br>
+    dan menciptakan networking yang luas.
+  </p>
+</div>
+
+<!-- DOKUMENTASI PENGALAMAN -->
+<div class="about-gallery observe">
+  <h3 class="gallery-title">Dokumentasi Pengalaman</h3>
+
+  <div class="gallery-grid">
+    <div class="gallery-item"><img src="dor1.jpeg"></div>
+    <div class="gallery-item"><img src="dor2.jpeg"></div>
+    <div class="gallery-item"><img src="dor3.jpeg"></div>
+
+    <div class="gallery-item"><img src="dor3.jpeg"></div>
+    <div class="gallery-item"><img src="dor4.jpeg"></div>
+    <div class="gallery-item"><img src="dor5.jpeg"></div>
+
+    <div class="gallery-item"><img src="dor6.jpeg"></div>
+    <div class="gallery-item"><img src="dor7.jpeg"></div>
+    <div class="gallery-item"><img src="dor8.jpeg"></div>
+
+    <div class="gallery-item"><img src="dor9.jpeg"></div>
+    <div class="gallery-item"><img src="dor10.jpeg"></div>
+    <div class="gallery-item"><img src="dor11.jpeg"></div>
+    
+    <div class="gallery-item"><img src="dor12.jpeg"></div>
+    <div class="gallery-item"><img src="dor 13.jpeg"></div>
+    <div class="gallery-item"><img src="dor14.jpeg"></div>
+
+  </div>
+  </div>
+    <footer class="footer">
+  <div class="footer-text">
+    Terima kasih sudah membaca cerita hidup saya ✨<br>
+    Mari terus bertumbuh dan berproses bersama.
+  </div>
+
+  <div class="footer-social">
+    <a href="https://instagram.com/zeflow_w"><i class="fab fa-instagram"></i></a>
+    <a href="#"><i class="fab fa-facebook"></i></a>
+    <a href="#"><i class="fab fa-github"></i></a>
+    <a href="#"><i class="fab fa-twitter"></i></a>
+  </div>
+</footer>
+
+</div>
+</div>
+
+<!-- ABOUT EXTRA (MUNCUL SAAT SCROLL) -->
+<div class="about-extra">
+
+  <div class="about-item">
+    <div class="about-icon">
+      <i class="fa-solid fa-user"></i>
+    </div>
+    <div class="about-text">
+      Fokus membangun skill dan mental sejak dini untuk
+      menghadapi dunia industri dan bisnis.
+    </div>
+  </div>
+
+  <div class="about-item">
+    <div class="about-icon">
+      <i class="fa-solid fa-user"></i>
+    </div>
+    <div class="about-text">
+      Setiap proses adalah pembelajaran, setiap kesalahan
+      adalah bekal menuju versi terbaik diri saya.
+    </div>
+    </div>
+    
+  </div>
+</div>
+
+  
+  </div>
+
+</div>
+
+<!-- CONTACT -->
+<div class="page" id="contact">
+  <a class="card" href="tel:+628579806858"><i class="fa fa-phone"></i> +62 8579 8068 58</a>
+  <a class="card" href="https://wa.me/628579806858"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+  <a class="card" href="https://instagram.com/zeflow_w"><i class="fab fa-instagram"></i> Instagram</a>
+</div>
+
+<!-- SARAN -->
+<div class="page" id="comment">
+  <form class="form" onsubmit="sendMsg(event)">
+    <input type="text" placeholder="Nama kamu" required>
+    <textarea placeholder="Tulis pesan atau nasihat kamu..." required></textarea>
+    <button type="submit">Kirim Pesan</button>
+  </form>
+  <div class="thanks" id="thanks">
+    Terima kasih atas pesan dan dukungan kamu 🙏
+  </div>
+</div>
+
+<!-- MENU -->
+<div class="menu">
+  <button onclick="openPage('home',this)" class="active">Home</button>
+  <button onclick="openPage('about',this)">About</button>
+  <button onclick="openPage('contact',this)">Contact</button>
+  <button onclick="openPage('comment',this)">Saran</button>
+</div>
+
+<script>
+let current="home";
+
+function openPage(id,btn){
+ if(id===current)return;
+
+ const old=document.getElementById(current);
+ const next=document.getElementById(id);
+
+ old.classList.remove("active");
+ old.classList.add("exit");
+
+ setTimeout(()=>{
+  old.style.display="none";
+  old.classList.remove("exit");
+
+  next.style.display="block";
+  requestAnimationFrame(()=>{
+    next.classList.add("active");
+  });
+
+  current=id;
+ },400);
+
+ document.querySelectorAll('.menu button')
+  .forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');
+
+ setTimeout(()=>{
+  document.querySelectorAll('.about-box,.card')
+   .forEach(e=>e.classList.add('show'));
+ },300);
+}
+
+/* MOTIVASI */
+const obs=new IntersectionObserver(e=>{
+ if(e[0].isIntersecting){
+  e[0].target.classList.add("show");
+ }
+});
+obs.observe(document.getElementById("motivation"));
+
+/* FORM */
+function sendMsg(e){
+ e.preventDefault();
+ document.querySelector('.form').style.display='none';
+ document.getElementById('thanks').style.display='block';
+}
+
+/* BACKGROUND */
+const c=document.getElementById('bg'),ctx=c.getContext('2d');
+c.width=innerWidth;c.height=innerHeight;
+let stars=[];
+for(let i=0;i<60;i++){
+ stars.push({x:Math.random()*c.width,y:Math.random()*c.height,v:1+Math.random()*2,c:Math.random()>.5?'cyan':'orange'});
+}
+function draw(){
+ ctx.clearRect(0,0,c.width,c.height);
+ stars.forEach(s=>{
+  ctx.fillStyle=s.c;
+  ctx.fillRect(s.x,s.y,2,2);
+  s.x-=s.v;s.y+=s.v;
+  if(s.y>c.height||s.x<0){s.x=Math.random()*c.width;s.y=0}
+ });
+ requestAnimationFrame(draw);
+}
+draw();
+
+</script>
+<script>
+const music = document.getElementById("bgMusic");
+let musicPlayed = false;
+
+// play musik saat interaksi pertama
+document.addEventListener("click", () => {
+  if(!musicPlayed){
+    music.volume = 0.4; // lembut, ga kaget
+    music.play();
+    musicPlayed = true;
+  }
+});
+</script>
+<script>
+const boxes = document.querySelectorAll('.observe');
+
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    const el = entry.target;
+
+    // MASUK → pas box di tengah layar
+    if(entry.isIntersecting){
+      el.classList.add('active');
+      el.classList.remove('out');
+    }
+
+    // KELUAR → baru kesedot setelah lewat ATAS
+    if(
+      !entry.isIntersecting &&
+      entry.boundingClientRect.top < -50
+    ){
+      el.classList.remove('active');
+      el.classList.add('out');
+    }
+  });
+},{
+  threshold:0.6   // 🔥 harus setengah layar dulu
+});
+// OBSERVER ABOUT CLOSING
+document.querySelectorAll('.about-closing')
+ .forEach(el=>obs.observe(el));
+
+boxes.forEach(b=>observer.observe(b));
+// OBSERVER GALERI
+const galleryObs = new IntersectionObserver(entries=>{
+ entries.forEach(e=>{
+  if(e.isIntersecting){
+    e.target.classList.add("show");
+  }else{
+    e.target.classList.remove("show");
+  }
+ });
+},{threshold:0.25});
+
+document.querySelectorAll('.about-gallery')
+ .forEach(el=>galleryObs.observe(el));
+
+</script>
+ 
+
+</body>
+</html>
